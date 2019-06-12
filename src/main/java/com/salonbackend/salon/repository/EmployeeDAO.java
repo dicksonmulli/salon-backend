@@ -2,7 +2,9 @@ package com.salonbackend.salon.repository;
 
 import com.salonbackend.salon.model.Employee;
 import com.salonbackend.salon.model.Employees;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class EmployeeDAO {
     private static Employees list = new Employees();
 
