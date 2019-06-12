@@ -6,18 +6,22 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class EmployeeDAO {
-    private static Employees list = new Employees();
+    private static Employees employees = new Employees();
 
     /**
      * Gets all employees
      * @return
      */
     public Employees getAllEmployees() {
-        return list;
+        return employees;
     }
 
     public void addEmployee(Employee employee) {
-        list.getEmployeeList().add(employee);
+        Employee employeeCreated = new Employee(employee.getFirstName(),
+                employee.getLastName(),
+                employee.getEmail());
+
+        employees.getEmployeeList().add(employeeCreated);
     }
 
     /**
@@ -28,11 +32,11 @@ public class EmployeeDAO {
     public Employee getEmployeeById(Integer id) {
 
         Employee requestedEmployee = new Employee();
-        if (id < 0 || list.getEmployeeList().isEmpty()) {
+        if (id < 0 || employees.getEmployeeList().isEmpty()) {
             return requestedEmployee;
         }
 
-        for (Employee employee: list.getEmployeeList()) {
+        for (Employee employee: employees.getEmployeeList()) {
             if (employee.getId().equals(id)) requestedEmployee = employee;
         }
 

@@ -29,4 +29,9 @@ public class EmployeeController {
 
         return location;
     }
+
+    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
+    public Employee getEmployee(@RequestParam(value="id") Integer id) {
+        return employeeDao.getEmployeeById(id);
+    }
 }
