@@ -2,12 +2,13 @@ package com.salonbackend.salon.controller;
 
 import com.salonbackend.salon.model.Employee;
 import com.salonbackend.salon.model.Employees;
+import com.salonbackend.salon.model.EmployeeResponse;
 import com.salonbackend.salon.repository.EmployeeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(path = "/employees")
@@ -21,13 +22,20 @@ public class EmployeeController {
         return employeeDao.getAllEmployees();
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
-    public String addEmployee(@RequestBody Employee employee) {
-        employeeDao.addEmployee(employee);
+    public EmployeeResponse addEmployee(@RequestBody Employee employee) {
+        Integer employerCreatedId = employeeDao.addEmployee(employee);
 
-        String location = "Success";
+        EmployeeResponse employeeResponse;
 
-        return location;
+        if (employerCreatedId < 10) {
+            employeeResponse = new EmployeeResponse(HttpStatus.INTERNAL_SERVER_ERROR, "ServerError", "User " + employerCreatedId + " could not be created");
+        } else {
+            employeeResponse = new EmployeeResponse(HttpStatus.ACCEPTED, "Success", "User " + employerCreatedId + " was created successfully");
+        }
+
+        return employeeResponse;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")

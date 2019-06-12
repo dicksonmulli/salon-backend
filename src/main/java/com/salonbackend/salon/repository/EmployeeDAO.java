@@ -16,12 +16,14 @@ public class EmployeeDAO {
         return employees;
     }
 
-    public void addEmployee(Employee employee) {
+    public Integer addEmployee(Employee employee) {
         Employee employeeCreated = new Employee(employee.getFirstName(),
                 employee.getLastName(),
                 employee.getEmail());
 
         employees.getEmployeeList().add(employeeCreated);
+
+        return employeeCreated.getId();
     }
 
     /**
@@ -32,6 +34,7 @@ public class EmployeeDAO {
     public Employee getEmployeeById(Integer id) {
 
         Employee requestedEmployee = new Employee();
+
         if (id < 0 || employees.getEmployeeList().isEmpty()) {
             return requestedEmployee;
         }
