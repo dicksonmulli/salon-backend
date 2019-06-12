@@ -6,6 +6,7 @@ import com.salonbackend.salon.model.EmployeeResponse;
 import com.salonbackend.salon.repository.EmployeeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -39,7 +40,14 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
-    public Employee getEmployee(@RequestParam(value="id") Integer id) {
-        return employeeDao.getEmployeeById(id);
+    public ResponseEntity getEmployee(@RequestParam(value="id") Integer id) {
+        if (id < 1) {
+            return ResponseEntity.badRequest().body("Invalid user id");
+        }
+
+        if (employeeDao.getEmployeeById(id).getId() == null) {
+            return ResponseEntity.badRequest().body("User id doesn't exist");
+        }
+        return ResponseEntity.ok().body(employeeDao.getEmployeeById(id));
     }
 }
