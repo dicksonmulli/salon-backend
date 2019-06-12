@@ -1,11 +1,30 @@
 package com.salonbackend.salon.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.salonbackend.salon.model.Employee;
+import com.salonbackend.salon.model.Employees;
+import com.salonbackend.salon.repository.EmployeeDAO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(path = "/employees")
 public class EmployeeController {
 
-    //private EmployeeDAO employeeDao;
+    private EmployeeDAO employeeDao;
+
+    @GetMapping(path = "/all", produces = "application/json")
+    public Employees getEmployees() {
+        return employeeDao.getAllEmployees();
+    }
+
+    @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
+    public String addEmployee(@RequestBody Employee employee) {
+        employeeDao.addEmployee(employee);
+
+        String location = "Success";
+
+        return location;
+    }
 }
