@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -19,35 +23,29 @@ public class EmployeeController {
     private EmployeeDAO employeeDao;
 
     @GetMapping(path = "/all", produces = "application/json")
-    public Employees getEmployees() {
-        return employeeDao.getAllEmployees();
+    public List<Employee> getEmployees() {
+        return employeeDao.findAll();
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
-    public EmployeeResponse addEmployee(@RequestBody Employee employee) {
-        Integer employerCreatedId = employeeDao.addEmployee(employee);
+    public ResponseEntity<Object> createEmployee(@RequestBody Employee employee) {
+        Employee saveEmployee = employeeDao.save(employee);
 
-        EmployeeResponse employeeResponse;
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(saveEmployee.getId()).toUri();
 
-        if (employerCreatedId < 10) {
-            employeeResponse = new EmployeeResponse(HttpStatus.INTERNAL_SERVER_ERROR, "ServerError", "User " + employerCreatedId + " could not be created");
-        } else {
-            employeeResponse = new EmployeeResponse(HttpStatus.ACCEPTED, "Success", "User " + employerCreatedId + " was created successfully");
-        }
-
-        return employeeResponse;
+        return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity getEmployee(@RequestParam(value="id") Integer id) {
-        if (id < 1) {
-            return ResponseEntity.badRequest().body("Invalid user id");
-        }
-
-        if (employeeDao.getEmployeeById(id).getId() == null) {
-            return ResponseEntity.badRequest().body("User id doesn't exist");
-        }
-        return ResponseEntity.ok().body(employeeDao.getEmployeeById(id));
-    }
+//    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity getEmployee(@RequestParam(value="id") Integer id) {
+//        if (id < 1) {
+//            return ResponseEntity.badRequest().body("Invalid user id");
+//        }
+//
+//        if (employeeDao.getEmployeeById(id).getId() == null) {
+//            return ResponseEntity.badRequest().body("User id doesn't exist");
+//        }
+//        return ResponseEntity.ok().body(employeeDao.getEmployeeById(id));
+//    }
 }

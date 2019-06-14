@@ -1,11 +1,19 @@
 package com.salonbackend.salon.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Entity
 public class Employee {
 
+    // You can use atomic class for the auto incrementing if you are not using db
     private static final AtomicInteger count = new AtomicInteger(0);
-    private Integer id;
+
+    @Id
+    @GeneratedValue
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -13,14 +21,14 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String email) {
-        this.id = count.incrementAndGet();
+    public Employee(Long id, String firstName, String lastName, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
