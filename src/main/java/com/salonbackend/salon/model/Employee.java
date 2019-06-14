@@ -1,5 +1,8 @@
 package com.salonbackend.salon.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +10,9 @@ import javax.validation.constraints.Size;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
+
+// Swaggar
+@ApiModel(description ="Details of Employee")
 public class Employee {
 
     // You can use atomic class for the auto incrementing if you are not using db
@@ -15,6 +21,9 @@ public class Employee {
     @Id
     @GeneratedValue
     private Long id;
+
+    // Swaggar
+    @ApiModelProperty(notes="Name should have atleast 2 characters")
 
     // Validation
     @Size(min=2, message="Name should have atleast 2 characters")

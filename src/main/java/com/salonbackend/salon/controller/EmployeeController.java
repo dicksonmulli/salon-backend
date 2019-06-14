@@ -3,6 +3,7 @@ package com.salonbackend.salon.controller;
 import com.salonbackend.salon.exception.EmployeeNotFoundException;
 import com.salonbackend.salon.model.Employee;
 import com.salonbackend.salon.repository.EmployeeDAO;
+import io.swagger.annotations.ApiOperation;
 import jdk.internal.jline.internal.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
+
+    // Swaggar
+    @ApiOperation(value = "Find employee by id", notes = "Also returns a link to retrieve all employees with rel - all-employees")
     public Employee retrieveEmployee(@PathVariable long id) {
         Optional<Employee> employee = employeeDao.findById(id);
 
