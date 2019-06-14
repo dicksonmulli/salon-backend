@@ -3,6 +3,7 @@ package com.salonbackend.salon.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
@@ -14,6 +15,9 @@ public class Employee {
     @Id
     @GeneratedValue
     private Long id;
+
+    // Validation
+    @Size(min=2, message="Name should have atleast 2 characters")
     private String firstName;
     private String lastName;
     private String email;
