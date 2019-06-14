@@ -32,6 +32,10 @@ public class Employee {
         return id;
     }
 
+    public void setId(Long newId) {
+        this.id = newId;
+    }
+
     public String getFirstName() {
         return firstName;
     }

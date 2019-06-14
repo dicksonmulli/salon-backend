@@ -1,19 +1,17 @@
 package com.salonbackend.salon.controller;
 
+import com.salonbackend.salon.exception.EmployeeNotFoundException;
 import com.salonbackend.salon.model.Employee;
-import com.salonbackend.salon.model.Employees;
-import com.salonbackend.salon.model.EmployeeResponse;
 import com.salonbackend.salon.repository.EmployeeDAO;
+import jdk.internal.jline.internal.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/employees")
@@ -37,15 +35,39 @@ public class EmployeeController {
         return ResponseEntity.created(location).build();
     }
 
-//    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
-//    public ResponseEntity getEmployee(@RequestParam(value="id") Integer id) {
-//        if (id < 1) {
-//            return ResponseEntity.badRequest().body("Invalid user id");
-//        }
-//
-//        if (employeeDao.getEmployeeById(id).getId() == null) {
-//            return ResponseEntity.badRequest().body("User id doesn't exist");
-//        }
-//        return ResponseEntity.ok().body(employeeDao.getEmployeeById(id));
-//    }
+    @GetMapping("/employees/{id}")
+    public Employee retrieveEmployee(@PathVariable long id) {
+        Optional<Employee> employee = employeeDao.findById(id);
+
+        if (!employee.isPresent()) {
+            try {
+                throw new EmployeeNotFoundException("id-" + id);
+            } catch (EmployeeNotFoundException e) {
+                Log.error("id- " + id + " " + e);
+            }
+        }
+
+        Log.error("id- " + id + " " + employee.get().toString());
+        return employee.get();
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public void deleteEmployee(@PathVariable long id) {
+        employeeDao.deleteById(id);
+    }
+
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<Object> updateEmployee(@RequestBody Employee employee, @PathVariable long id) {
+
+        Optional<Employee> employeeOptional = employeeDao.findById(id);
+
+        if (!employeeOptional.isPresent())
+            return ResponseEntity.notFound().build();
+
+        employee.setId(id);
+
+        employeeDao.save(employee);
+
+        return ResponseEntity.noContent().build();
+    }
 }
