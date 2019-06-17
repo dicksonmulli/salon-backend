@@ -1,6 +1,5 @@
 language: java
-dist: xenial
-jdk: openjdk8
+jdk: oraclejdk8
 
 before_install:
   - chmod +x mvnw
