@@ -4,7 +4,6 @@ import com.salonbackend.salon.exception.EmployeeNotFoundException;
 import com.salonbackend.salon.model.Employee;
 import com.salonbackend.salon.repository.EmployeeDAO;
 import io.swagger.annotations.ApiOperation;
-import jdk.internal.jline.internal.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +49,6 @@ public class EmployeeController {
             }
         }
 
-        Log.error("id- " + id + " " + employee.get().toString());
         return employee.get();
     }
 
