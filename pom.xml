@@ -94,6 +94,31 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>delete-empty-dirs</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <delete includeemptydirs="true">
+                                    <fileset dir="${project.build.directory}/generated-docs">
+                                        <and>
+                                            <size value="0" />
+                                            <type type="dir" />
+                                        </and>
+                                    </fileset>
+                                </delete>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
