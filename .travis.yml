@@ -10,7 +10,7 @@ addons:
   sonarcloud:
     organization: "dicksonmulli-github"
     token:
-      secure: 96c14995883fedb3f029c468a8e8dfa59dbcb062
+      secure: 82b2e868e29286493fb9d76b34ef577b78586c60
 
 cache:
   directories:
