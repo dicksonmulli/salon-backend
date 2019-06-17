@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
