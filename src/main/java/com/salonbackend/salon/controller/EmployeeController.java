@@ -47,7 +47,6 @@ public class EmployeeController {
             try {
                 throw new EmployeeNotFoundException("id-" + id);
             } catch (EmployeeNotFoundException e) {
-                Log.error("id- " + id + " " + e);
             }
         }
 
